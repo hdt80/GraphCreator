@@ -1,0 +1,19 @@
+[15:46:59] [Server thread/INFO]: Starting minecraft server version 1.7.2
+[15:46:59] [Server thread/WARN]: To start the server with more ram, launch it as "java -Xmx1024M -Xms1024M -jar minecraft_server.jar"
+[15:46:59] [Server thread/INFO]: Loading properties
+[15:46:59] [Server thread/INFO]: Default game type: SURVIVAL
+[15:46:59] [Server thread/INFO]: Generating keypair
+[15:46:59] [Server thread/INFO]: Starting Minecraft server on *:25565
+[15:47:00] [Server thread/INFO]: This server is running CraftBukkit version git-Bukkit-1.7.2-R0.3-b3020jnks (MC: 1.7.2) (Implementing API version 1.7.2-R0.3)
+[15:47:00] [Thread-7/WARN]: Exception in thread "Thread-7" 
+[15:47:00] [Thread-7/WARN]: java.lang.NullPointerException
+[15:47:00] [Thread-7/WARN]: 	at sun.net.www.protocol.http.NegotiateAuthentication.isSupported(Unknown Source)
+[15:47:00] [Thread-7/WARN]: 	at sun.net.www.protocol.http.AuthenticationHeader.parse(Unknown Source)
+[15:47:00] [Thread-7/WARN]: 	at sun.net.www.protocol.http.AuthenticationHeader.<init>(Unknown Source)
+[15:47:00] [Thread-7/WARN]: 	at sun.net.www.protocol.http.HttpURLConnection.getInputStream(Unknown Source)
+[15:47:00] [Thread-7/WARN]: 	at org.bukkit.craftbukkit.v1_7_R1.updater.BukkitDLUpdaterService.fetchArtifact(BukkitDLUpdaterService.java:51)
+[15:47:00] [Thread-7/WARN]: 	at org.bukkit.craftbukkit.v1_7_R1.updater.BukkitDLUpdaterService.getArtifact(BukkitDLUpdaterService.java:30)
+[15:47:00] [Thread-7/WARN]: 	at org.bukkit.craftbukkit.v1_7_R1.updater.AutoUpdater$1.run(AutoUpdater.java:77)
+[15:47:00] [Server thread/INFO]: Preparing level "world"
+[15:47:01] [Server thread/INFO]: Preparing start region for level 0 (Seed: 2311594984298675239)
+[15:47:02] [Server thread/INFO]: Preparing spawn area: 6%
