@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class GraphPanel extends JPanel {
+	private static final long serialVersionUID = 3248722979483760432L;
 	public static ArrayList<Node> nodeList = new ArrayList<Node>();
 	public static ArrayList<Edge> edgeList = new ArrayList<Edge>();
-	public static boolean[][] adjMatrix = new boolean[nodeList.size()][nodeList
+
+	ArrayList<ArrayList<Boolean>> adjMatrix = new ArrayList<ArrayList<Boolean>>();
+	public static boolean[][] adjcMatrix = new boolean[nodeList.size()][nodeList
 			.size()];
 
 	public GraphPanel() {
@@ -39,15 +42,64 @@ public class GraphPanel extends JPanel {
 			Edge e = edgeList.get(i);
 			g.drawLine(e.getOne().getX(), e.getOne().getY(), e.getTwo().getX(),
 					e.getTwo().getY());
+			g.drawString(e.getLabel(),
+					(e.getOne().getX() + e.getTwo().getX()) / 2, (e.getOne()
+							.getY() + e.getTwo().getY()) / 2);
 		}
 	}
 
 	public void addNode(Node node) {
 		nodeList.add(node);
+		adjMatrix.add(new ArrayList<Boolean>());
+		for (int i = 0; i < adjMatrix.size() - 1; i++) {
+			adjMatrix.get(i).add(false);
+		}
+		for (int i = 0; i < adjMatrix.size(); i++) {
+			adjMatrix.get(adjMatrix.size() - 1).add(false);
+		}
+		boolean[][] tempMatrix = new boolean[adjcMatrix.length][adjcMatrix.length];
+		for (int i = 0; i < tempMatrix.length; i++) {
+			for (int j = 0; j < tempMatrix.length; j++) {
+				tempMatrix[i][j] = adjcMatrix[i][j];
+			}
+		}
+		// print temp matrix
+		for (int i = 0; i < tempMatrix.length; i++) {
+			for (int j = 0; j < tempMatrix.length; j++) {
+				System.out.println(i + ", " + j + ": " + tempMatrix[i][j] + "");
+			}
+		}
+		System.out.println("============");
+		adjcMatrix = new boolean[tempMatrix.length + 1][tempMatrix.length + 1];
+		// System.out.println("tempMatrix lenght: " + adjcMatrix.length);
+		for (int i = 1; i < adjcMatrix.length - 1; i++) {
+			for (int j = 1; j < adjcMatrix.length - 1; j++) {
+				// System.out.println(i + ", " + j);
+				adjcMatrix[i][j] = tempMatrix[i][j];
+			}
+		}
+		// printAdjMatrix();
+		printAdjcMatrix();
 	}
 
 	public void addEdge(Edge edge) {
 		edgeList.add(edge);
+		int firstIndex = 0;
+		int secondIndex = 0;
+		for (int i = 0; i < nodeList.size(); i++) {
+			if (edge.getOne().equals(nodeList.get(i))) {
+				firstIndex = i;
+			}
+			if (edge.getTwo().equals(nodeList.get(i))) {
+				secondIndex = i;
+			}
+		}
+		adjcMatrix[edge.getOne().getID()][edge.getTwo().getID()] = true;
+		adjcMatrix[edge.getTwo().getID()][edge.getOne().getID()] = true;
+		adjMatrix.get(firstIndex).set(secondIndex, true);
+		adjMatrix.get(secondIndex).set(firstIndex, true);
+		// printAdjMatrix();
+		printAdjcMatrix();
 	}
 
 	public Node checkForNode(int x, int y) {
@@ -62,4 +114,26 @@ public class GraphPanel extends JPanel {
 		}
 		return null;
 	}
+
+	public void printAdjMatrix() {
+		for (int i = 0; i < adjMatrix.size(); i++) {
+			for (int j = 0; j < adjMatrix.size(); j++) {
+				System.out.print(adjMatrix.get(i).get(j) + "\t");
+			}
+			System.out.println("");
+		}
+		System.out.println("");
+	}
+
+	public void printAdjcMatrix() {
+		System.out.println("adjcMatrix.lenght: " + adjcMatrix.length);
+		for (int i = 0; i < adjcMatrix.length; i++) {
+			for (int j = 0; j < adjcMatrix.length; j++) {
+				System.out.println(adjcMatrix[i][j] + "\t");
+			}
+			System.out.println("");
+		}
+		System.out.println("");
+	}
+
 }

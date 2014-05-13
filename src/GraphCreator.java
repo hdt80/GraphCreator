@@ -76,18 +76,28 @@ public class GraphCreator implements ActionListener, MouseListener {
 			state = NODE_CREATE;
 		}
 		if (state == EDGE_CREATE) {
+			for (int i = 0; i < panel.nodeList.size(); i++) {
+				panel.nodeList.get(i).sethiLt(false);
+				frame.repaint();
+			}
 			if (panel.checkForNode(e.getX(), e.getY()) != null) {
 				tempNodeOne = panel.checkForNode(e.getX(), e.getY());
 				tempNodeOne.sethiLt(true);
+				state = EDGE_CREATE_SECOND;
+			} else {
+				System.out.println("No node found!");
 			}
-			state = EDGE_CREATE_SECOND;
-			System.out.println("No node found!");
 		}
 		if (state == EDGE_CREATE_SECOND) {
 			if (panel.checkForNode(e.getX(), e.getY()) != null) {
-				panel.addEdge(new Edge(tempNodeOne, panel.checkForNode(
-						e.getX(), e.getY()), labels.getText()));
-				tempNodeOne.sethiLt(false);
+				if (!panel.checkForNode(e.getX(), e.getY()).equals(tempNodeOne)) {
+					panel.addEdge(new Edge(tempNodeOne, panel.checkForNode(
+							e.getX(), e.getY()), labels.getText()));
+					tempNodeOne.sethiLt(false);
+					state = EDGE_CREATE;
+					tempNodeOne = null;
+					System.out.println("Creating edge sir");
+				}
 			}
 		}
 		frame.repaint();
