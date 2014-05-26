@@ -5,6 +5,7 @@ public class Node {
 	int id;
 	String label;
 	boolean hiLt;
+	GraphPanel panel = GraphCreator.panel;
 
 	public Node(int x, int y, String label) {
 		this.x = x;
@@ -12,7 +13,7 @@ public class Node {
 		this.r = 40;
 		this.label = label;
 		hiLt = false;
-		id = GraphPanel.nodeList.size();
+		id = panel.nodeList.size();
 	}
 
 	public int getX() {
@@ -55,8 +56,8 @@ public class Node {
 		hiLt = b;
 	}
 
-	public int getID() {
-		return id;
-	}
+	// public int getID() {
+	// return id;
+	// }
 
 }
