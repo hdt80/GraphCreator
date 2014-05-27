@@ -32,4 +32,14 @@ public class Edge {
 	public void setLabel(String label) {
 		this.label = label;
 	}
+
+	public Node getConnectedEdge(Node c) {
+		if (one.equals(c)) {
+			return two;
+		} else if (two.equals(c)) {
+			return one;
+		} else {
+			return null;
+		}
+	}
 }

@@ -41,6 +41,8 @@ public class GraphCreator implements ActionListener, MouseListener {
 	boolean running = false;
 	// used for making edges
 	Node tempNodeOne;
+	ArrayList<Path> completed = new ArrayList<Path>();
+	boolean start = false;
 
 	public static void main(String[] args) {
 		new GraphCreator();
@@ -198,15 +200,44 @@ public class GraphCreator implements ActionListener, MouseListener {
 			}
 		}
 		if (e.getSource().equals(salesman)) {
-			if (state != SALESMAN_RUNNING) {
-				salesman.setBackground(Color.GREEN);
-				addNode.setBackground(Color.LIGHT_GRAY);
-				addEdge.setBackground(Color.LIGHT_GRAY);
-				running = true;
-				state = SALESMAN_RUNNING;
+			completed.clear();
+			start = true;
+			// check if node exists
+			boolean real = false;
+			for (int i = 0; i < panel.nodeList.size(); i++) {
+				if (panel.nodeList.get(i).getLabel()
+						.equals(salesmanTF.getText())) {
+					real = true;
+				}
+			}
+			if (real == true) {
+				traveling(panel.getNode(salesmanTF.getText()),
+						new ArrayList<Node>(), 0);
+				// if there are no paths
+				if (completed.isEmpty() == true) {
+					JOptionPane
+							.showMessageDialog(panel,
+									"no working paths seem to exist!\nPlease try a different start value.");
+				} else {// find the shortest route
+					Path tmp = completed.get(0);
+					for (int i = 0; i < completed.size(); i++) {
+						if (completed.get(i).getDistance() < tmp.getDistance()) {
+							tmp = completed.get(i);
+						}
+					}
+					String output = "";
+					for (int j = 0; j < tmp.path.size(); j++) {
+						output = output + tmp.path.get(j).getLabel() + "  ";
+					}
+					JOptionPane.showMessageDialog(null, output,
+							"Most Efficient Path:", JOptionPane.NO_OPTION);
+					JOptionPane.showMessageDialog(null, tmp.getDistance(),
+							"Distance:", JOptionPane.NO_OPTION);
+				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Already running salesman",
-						"", JOptionPane.NO_OPTION);
+				JOptionPane.showMessageDialog(null,
+						"Not a valid starting path!", "ERROR!",
+						JOptionPane.NO_OPTION);
 			}
 		}
 		printState();
@@ -223,6 +254,47 @@ public class GraphCreator implements ActionListener, MouseListener {
 			}
 		}
 		return true;
+	}
+
+	public void traveling(Node n, ArrayList<Node> path, int total) {
+		if (start == true) {
+			path.add(n);
+			start = false;
+		}
+		if (path.size() == panel.nodeList.size()) {
+			// add path to the list
+			ArrayList<Node> path1 = new ArrayList<Node>();
+			for (int i = 0; i < path.size(); i++) {
+				path1.add(path.get(i));
+			}
+			completed.add(new Path(path1));
+			completed.get(completed.size() - 1).addDistance(total);
+			// remove last node
+			path.remove(path.size() - 1);
+			return;
+			// loop through each of the edges
+		}
+		Edge edge = null;
+		for (int i = 0; i < panel.edgeList.size(); i++) {
+			edge = panel.edgeList.get(i);
+			if (edge.getConnectedEdge(n) != null) {
+				boolean isin = false; // checking if it's in the path
+				for (int j = 0; j < path.size(); j++) {
+					if (path.get(j).equals(edge.getConnectedEdge(n)) == true) {
+						isin = true;
+					}
+				}
+				if (isin == false) { // gotta put it in
+					path.add(edge.getConnectedEdge(n));
+					int edgecost = Integer.parseInt(edge.getLabel());
+					int temp = total + edgecost;
+					traveling(edge.getConnectedEdge(n), path, temp);
+				}
+			}
+
+		}
+		// remove node
+		path.remove(n);
 	}
 
 }
